@@ -81,7 +81,13 @@ export default class Handler {
                 this.renderTile(this.images.mine, x, y); //Stub
             }else{
                 const num = this.getSurroundingMines(x, y);
-                (num > 0) && this.renderTile(this.images.number[num - 1], x, y);
+                if(num === 0) {
+                    this.doRedirect(x - 1, y - 1); this.doRedirect(x, y - 1); this.doRedirect(x + 1, y - 1);
+                    this.doRedirect(x - 1, y); this.doRedirect(x + 1, y);
+                    this.doRedirect(x - 1, y + 1); this.doRedirect(x, y + 1); this.doRedirect(x + 1, y + 1);
+                } else {
+                    this.renderTile(this.images.number[num - 1], x, y);
+                }
             }
         }else{
             this.renderTile(this.images.unclickedCell, x, y);
@@ -94,6 +100,18 @@ export default class Handler {
     renderTile(img, x, y) {
         const scaler = 500 / this.size;
         this.context.drawImage(img, x * scaler, y * scaler, scaler, scaler);
+    }
+
+    doRedirect(x, y) {
+        if(!this.isValid(x, y)) return;
+
+        const cell = this.cells[x][y];
+        
+        if(!cell.isClicked) {
+            cell.isFlagged = false;
+            cell.isClicked = true;
+            this.drawTile(x, y);
+        }
     }
 
     doRight(x, y) {
@@ -137,7 +155,7 @@ export default class Handler {
      * Returns the amount of cells around (x, y) that are mines
      * @param {Number} x X location of the cell
      * @param {Number} y Y location of the cell
-     * @returns {boolean} The amount of cells arount (x, y)
+     * @returns {Number} The amount of cells arount (x, y)
      */
     getSurroundingMines(x, y){
         return this.checkMine(x - 1, y - 1) + this.checkMine(x, y - 1) + this.checkMine(x + 1, y - 1) + this.checkMine(x - 1, y) + this.checkMine(x + 1, y) + this.checkMine(x - 1, y + 1) + this.checkMine(x, y + 1) + this.checkMine(x + 1, y + 1);
