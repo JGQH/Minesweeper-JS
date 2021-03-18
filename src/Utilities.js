@@ -83,4 +83,20 @@ export default class Handler {
             }
         }
     }
+
+    doRight(x, y) {
+        const cell = this.cells[x][y];
+        if(!cell.isFlagged && !cell.isClicked) { //If cell is not flagged nor clicked
+            cell.isClicked = true;
+            this.drawTile(x, y);
+        }
+    }
+
+    doLeft(x, y) {
+        const cell = this.cells[x][y];
+        if(!cell.isClicked){
+            cell.isFlagged = !cell.isFlagged;
+            this.drawTile(x, y);
+        }
+    }
 }

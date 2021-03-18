@@ -5,6 +5,14 @@ function App() {
   const canvasRef = useRef(null);
   const [handler, setHandler] = useState(new Handler());
 
+  function getLocation(evt) {
+    const bounds = canvasRef.current.getBoundingClientRect();
+    return {
+      "x": Math.floor(handler.size * (evt.clientX - bounds.left) / 500),
+      "y": Math.floor(handler.size * (evt.clientY - bounds.top) / 500)
+    }
+  }
+
   function gameSetup() {
     for(let x = 0; x < handler.size; x++){
       for(let y = 0; y < handler.size; y++){
@@ -22,12 +30,25 @@ function App() {
     gameSetup();
   }, []);
 
-  function doDraw(evt) {
-    console.log(evt.clientX, evt.clientY);
+  function doRight(evt) {
+    const {x, y} = getLocation(evt);
+    setHandler(newHandler => {
+      newHandler.doRight(x, y);
+      return newHandler;
+    })
+  }
+
+  function doLeft(evt) {
+    const {x, y} = getLocation(evt);
+    setHandler(newHandler => {
+      newHandler.doLeft(x, y);
+      return newHandler;
+    });
+    evt.preventDefault();
   }
 
   return (
-    <canvas ref={canvasRef} width="500" height="500" onClick={doDraw}/>
+    <canvas ref={canvasRef} width="500" height="500" onClick={doRight} onContextMenu={doLeft}/>
   );
 }
 
