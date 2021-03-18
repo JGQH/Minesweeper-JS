@@ -16,7 +16,6 @@ This project is a practice for introduction to manipulating images. It's a simpl
 - NodeJS v15.8.0
 
 ## Illustrations
-\* *No images yet* \*
+![minesweeper](./readme/minesweeper.gif)
 
 ## To-Do
-- Display victory or lose message in canvas

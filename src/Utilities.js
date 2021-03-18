@@ -1,3 +1,5 @@
+import victory from './imgs/victory.png';
+import lost from './imgs/lost.png';
 import unclickedCell from './imgs/unclickedCell.png';
 import flaggedCell from './imgs/flaggedCell.png';
 import clickedCell from './imgs/clickedCell.png';
@@ -18,6 +20,8 @@ function getImages() {
     return image
   }
   return {
+    "victory": processImg(victory),
+    "lost": processImg(lost),
     "unclickedCell": processImg(unclickedCell),
     "flaggedCell": processImg(flaggedCell),
     "clickedCell": processImg(clickedCell),
@@ -188,9 +192,11 @@ export default class Handler {
         }
         this.ongoing = false;
         this.size = Math.max(sizeBase - 1, this.size - 2);
+        this.context.drawImage(this.images.lost, 0, 0, 500, 500);
     }
 
     winGame() {
         this.ongoing = false;
+        this.context.drawImage(this.images.victory, 0, 0, 500, 500);
     }
 }
