@@ -1,38 +1,25 @@
 import { useRef, useState, useEffect } from 'react';
-import unclickedCell from './imgs/unclickedCell.png';
-
-function getImages() {
-  function processImg(src) {
-    const image = new Image(32, 32);
-    image.src = src;
-    return image
-  }
-  return {
-    "unclickedCell": processImg(unclickedCell)
-  }
-}
+import Handler from './Utilities';
 
 function App() {
-  const images = getImages();
   const canvasRef = useRef(null);
-  const [size, setSize] = useState(7);
-  const [context, setContext] = useState(null);
+  const [handler, setHandler] = useState(new Handler());
 
-  function gameSetup(newContext) {
-    newContext.save();
-    const scaler = 500 / size;
-    for(let x = 0; x < size; x++){
-      for(let y = 0; y < size; y++){
-        newContext.drawImage(images.unclickedCell, x * scaler, y * scaler, scaler, scaler)
+  function gameSetup() {
+    for(let x = 0; x < handler.size; x++){
+      for(let y = 0; y < handler.size; y++){
+        handler.drawTile(x, y);
       }
     }
-    newContext.restore();
   };
 
   useEffect(() => {
     const newContext = canvasRef.current.getContext('2d'); 
-    setContext(newContext);
-    gameSetup(newContext);
+    setHandler(newHandler => {
+      newHandler.context = newContext;
+      return newHandler;
+    });
+    gameSetup();
   }, []);
 
   function doDraw(evt) {
