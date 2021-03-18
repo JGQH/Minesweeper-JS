@@ -31,19 +31,30 @@ function App() {
   }, []);
 
   function doRight(evt) {
-    const {x, y} = getLocation(evt);
-    setHandler(newHandler => {
-      newHandler.doRight(x, y);
-      return newHandler;
-    })
+    if(handler.ongoing) {
+      const {x, y} = getLocation(evt);
+      setHandler(newHandler => {
+        newHandler.doRight(x, y);
+        return newHandler;
+      });
+    }else{
+      setHandler(newHandler => {
+        newHandler.resizeGame(handler.size + 1);
+        return newHandler;
+      });
+      gameSetup();
+    }
   }
 
   function doLeft(evt) {
-    const {x, y} = getLocation(evt);
-    setHandler(newHandler => {
-      newHandler.doLeft(x, y);
-      return newHandler;
-    });
+    if(handler.ongoing) {
+      const {x, y} = getLocation(evt);
+      setHandler(newHandler => {
+        newHandler.doLeft(x, y);
+        return newHandler;
+      });
+    }
+    
     evt.preventDefault();
   }
 

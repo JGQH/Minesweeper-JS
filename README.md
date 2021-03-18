@@ -19,6 +19,4 @@ This project is a practice for introduction to manipulating images. It's a simpl
 \* *No images yet* \*
 
 ## To-Do
-- Add method to win or lose the game
-- Add method to play again
-- Add method to increase the amount of tiles
+- Display victory or lose message in canvas

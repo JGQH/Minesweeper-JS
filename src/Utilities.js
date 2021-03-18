@@ -63,12 +63,21 @@ function createGame(size) {
     return cells;
 } 
 
+const sizeBase = 5;
 export default class Handler {
     constructor() {
         this.context = null;
-        this.size = 7;
-        this.cells = createGame(7);
         this.images = getImages();
+        this.redirect = 0;
+        this.safeTiles = 0;
+        this.resizeGame(sizeBase);
+    }
+
+    resizeGame(newSize) {
+        this.size = newSize;
+        this.cells = createGame(newSize);
+        this.safeTiles = 0;
+        this.ongoing = true;
     }
 
     drawTile(x, y) {
@@ -78,16 +87,22 @@ export default class Handler {
         if(cell.isClicked) {
             this.renderTile(this.images.clickedCell, x, y);
             if(cell.isMine){
-                this.renderTile(this.images.mine, x, y); //Stub
+                this.loseGame();
             }else{
+                this.safeTiles++;
+
                 const num = this.getSurroundingMines(x, y);
                 if(num === 0) {
+                    this.redirect++;
                     this.doRedirect(x - 1, y - 1); this.doRedirect(x, y - 1); this.doRedirect(x + 1, y - 1);
                     this.doRedirect(x - 1, y); this.doRedirect(x + 1, y);
                     this.doRedirect(x - 1, y + 1); this.doRedirect(x, y + 1); this.doRedirect(x + 1, y + 1);
+                    this.redirect--;
                 } else {
                     this.renderTile(this.images.number[num - 1], x, y);
                 }
+
+                ((this.redirect === 0) && (this.safeTiles === Math.floor(0.8 * Math.pow(this.size, 2)))) && this.winGame();
             }
         }else{
             this.renderTile(this.images.unclickedCell, x, y);
@@ -159,5 +174,23 @@ export default class Handler {
      */
     getSurroundingMines(x, y){
         return this.checkMine(x - 1, y - 1) + this.checkMine(x, y - 1) + this.checkMine(x + 1, y - 1) + this.checkMine(x - 1, y) + this.checkMine(x + 1, y) + this.checkMine(x - 1, y + 1) + this.checkMine(x, y + 1) + this.checkMine(x + 1, y + 1);
+    }
+
+    loseGame() {
+        for(let x = 0; x < this.size; x++){
+            for(let y = 0; y < this.size; y++){
+                const cell = this.cells[x][y];
+                if(cell.isMine){
+                    this.renderTile(this.images.clickedCell, x, y);
+                    this.renderTile(this.images.mine, x, y);
+                }
+            }
+        }
+        this.ongoing = false;
+        this.size = Math.max(sizeBase - 1, this.size - 2);
+    }
+
+    winGame() {
+        this.ongoing = false;
     }
 }
