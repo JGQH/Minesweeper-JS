@@ -19,7 +19,6 @@ This project is a practice for introduction to manipulating images. It's a simpl
 \* *No images yet* \*
 
 ## To-Do
-- Function to draw each tile images
 - Generation of game logic
 - Getting tiled location of mouse click in canvas
 - Change image of tile based on game logic
