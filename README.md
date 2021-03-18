@@ -19,7 +19,7 @@ This project is a practice for introduction to manipulating images. It's a simpl
 \* *No images yet* \*
 
 ## To-Do
-- Change image of tile based on game logic
-- Add mechanic to block tiles
 - Add mechanic to clear surrounding tiles (When cleared tile number is 0)
+- Add method to win or lose the game
+- Add method to play again
 - Add method to increase the amount of tiles
