@@ -13,21 +13,13 @@ function App() {
     }
   }
 
-  function gameSetup() {
-    for(let x = 0; x < handler.size; x++){
-      for(let y = 0; y < handler.size; y++){
-        handler.drawTile(x, y);
-      }
-    }
-  };
-
   useEffect(() => {
     const newContext = canvasRef.current.getContext('2d'); 
     setHandler(newHandler => {
       newHandler.context = newContext;
+      newHandler.renderScreen();
       return newHandler;
     });
-    gameSetup();
   }, []);
 
   function doRight(evt) {
@@ -40,9 +32,9 @@ function App() {
     }else{
       setHandler(newHandler => {
         newHandler.resizeGame(handler.size + 1);
+        newHandler.renderScreen();
         return newHandler;
       });
-      gameSetup();
     }
   }
 

@@ -116,6 +116,16 @@ export default class Handler {
         }
     }
 
+    renderScreen() {
+        this.context.save();
+        for(let x = 0; x < this.size; x++){
+            for(let y = 0; y < this.size; y++){
+                this.drawTile(x, y);
+            }
+        }
+        this.context.restore();
+    }
+
     renderTile(img, x, y) {
         const scaler = 500 / this.size;
         this.context.drawImage(img, x * scaler, y * scaler, scaler, scaler);
